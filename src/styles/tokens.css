@@ -1,5 +1,4 @@
 :root {
-  /* Color: charcoal ink, warm paper, price-tag gold, sage for calm actions, rust for danger/errors */
   --color-ink: #21261f;
   --color-paper: #f7f4ec;
   --color-paper-raised: #ffffff;
@@ -11,11 +10,9 @@
   --color-line: #dcd6c4;
   --color-muted: #6f6a5c;
 
-  /* Type */
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Layout */
   --radius-sm: 4px;
   --radius-md: 8px;
   --shadow-card: 0 1px 2px rgba(33, 38, 31, 0.08), 0 4px 12px rgba(33, 38, 31, 0.06);
@@ -67,7 +64,6 @@ img {
   display: block;
 }
 
-/* Visible keyboard focus everywhere, per accessibility floor */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,

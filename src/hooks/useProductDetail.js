@@ -3,37 +3,37 @@ import { fetchProductById } from '../api/api';
 
 export default function useProductDetail(id) {
   const [product, setProduct] = useState(null);
-  const [status, setStatus] = useState('loading'); // 'loading' | 'success' | 'error' | 'not-found'
+  const [status, setStatus] = useState('loading');
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let cancelled = false;
+    let isActive = true;
 
-    async function load() {
-      setStatus('loading');
-      setError(null);
-      setProduct(null);
-      try {
-        const data = await fetchProductById(id);
-        if (cancelled) return;
-        // fakestoreapi returns `null` (200 OK) for ids that don't exist.
+    setStatus('loading');
+    setError(null);
+    setProduct(null);
+
+    fetchProductById(id)
+      .then((data) => {
+        if (!isActive) return;
+
         if (!data) {
           setStatus('not-found');
           return;
         }
+
         setProduct(data);
         setStatus('success');
-      } catch (err) {
-        if (!cancelled) {
-          setError(err.message || 'Failed to load this product.');
-          setStatus('error');
-        }
-      }
-    }
+      })
+      .catch((err) => {
+        if (!isActive) return;
 
-    load();
+        setError(err.message);
+        setStatus('error');
+      });
+
     return () => {
-      cancelled = true;
+      isActive = false;
     };
   }, [id]);
 

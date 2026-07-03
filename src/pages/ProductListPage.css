@@ -1,5 +1,32 @@
+.product-list__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.product-list__top h1 {
+  margin-bottom: 0;
+}
+
+.product-list__clear {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-paper-raised);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.product-list__clear:hover {
+  border-color: var(--color-sage);
+  color: var(--color-sage-dark);
+}
+
 .product-list__count {
   color: var(--color-muted);
   font-size: 0.85rem;
-  margin: -0.5rem 0 1rem;
+  margin: 0 0 1rem;
 }

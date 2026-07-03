@@ -1,10 +1,5 @@
 import './StarRating.css';
 
-/**
- * Renders a rounded star rating plus the review count.
- * Purely presentational — receives the `rating` object from the API
- * shape: { rate: number, count: number }.
- */
 export default function StarRating({ rating }) {
   if (!rating) return null;
   const rounded = Math.round(rating.rate);

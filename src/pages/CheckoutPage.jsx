@@ -1,54 +1,41 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import useCart from '../hooks/useCart';
-import { validateCheckout } from '../utils/validateCheckout';
 import './CheckoutPage.css';
-
-const INITIAL_VALUES = { name: '', email: '', address: '', cardNumber: '' };
 
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
+  const [done, setDone] = useState(false);
 
-  const [values, setValues] = useState(INITIAL_VALUES);
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    getValues,
+  } = useForm({
+    defaultValues: { name: '', email: '', address: '', cardNumber: '' },
+    mode: 'onBlur',
+  });
 
-  function handleChange(field, value) {
-    setValues((prev) => ({ ...prev, [field]: value }));
-  }
-
-  function handleBlur(field) {
-    setTouched((prev) => ({ ...prev, [field]: true }));
-    setErrors(validateCheckout({ ...values }));
-  }
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const validationErrors = validateCheckout(values);
-    setErrors(validationErrors);
-    setTouched({ name: true, email: true, address: true, cardNumber: true });
-
-    if (Object.keys(validationErrors).length > 0) {
-      return;
-    }
-
-    setIsProcessing(true);
-    // Simulate a payment/processing round trip — there is no real backend.
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    setIsProcessing(false);
-    setIsConfirmed(true);
+  async function onSubmit() {
+    await new Promise((r) => setTimeout(r, 800));
     clearCart();
+    setDone(true);
   }
 
-  if (isConfirmed) {
+  if (done) {
+    const { name, email } = getValues();
+    const firstName = name.split(' ')[0];
+
     return (
       <div className="checkout-confirmation">
-        <h1>Order confirmed 🎉</h1>
-        <p>Thanks, {values.name.split(' ')[0]}! A confirmation would normally be emailed to {values.email}.</p>
+        <h1>Order placed</h1>
+        <p>
+          Thanks {firstName}. In a real store we would email {email} a receipt.
+        </p>
         <Link to="/" className="checkout-confirmation__link">
-          Continue shopping →
+          Back to shop
         </Link>
       </div>
     );
@@ -57,9 +44,9 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="checkout-empty">
-        <h1>Nothing to check out</h1>
-        <p>Your cart is empty, so there's nothing to pay for yet.</p>
-        <Link to="/">← Back to products</Link>
+        <h1>Checkout</h1>
+        <p>Add something to your cart first.</p>
+        <Link to="/">Go to shop</Link>
       </div>
     );
   }
@@ -69,21 +56,18 @@ export default function CheckoutPage() {
       <h1>Checkout</h1>
 
       <div className="checkout-page__grid">
-        <form className="checkout-form" onSubmit={handleSubmit} noValidate>
+        <form className="checkout-form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="checkout-form__field">
-            <label htmlFor="name">Full name</label>
+            <label htmlFor="name">Name</label>
             <input
               id="name"
               type="text"
-              value={values.name}
-              onChange={(event) => handleChange('name', event.target.value)}
-              onBlur={() => handleBlur('name')}
-              aria-invalid={Boolean(touched.name && errors.name)}
-              aria-describedby={errors.name ? 'name-error' : undefined}
+              {...register('name', {
+                required: 'Required',
+                minLength: { value: 3, message: 'Too short' },
+              })}
             />
-            {touched.name && errors.name && (
-              <p className="checkout-form__error" id="name-error">{errors.name}</p>
-            )}
+            {errors.name && <p className="checkout-form__error">{errors.name.message}</p>}
           </div>
 
           <div className="checkout-form__field">
@@ -91,31 +75,25 @@ export default function CheckoutPage() {
             <input
               id="email"
               type="email"
-              value={values.email}
-              onChange={(event) => handleChange('email', event.target.value)}
-              onBlur={() => handleBlur('email')}
-              aria-invalid={Boolean(touched.email && errors.email)}
-              aria-describedby={errors.email ? 'email-error' : undefined}
+              {...register('email', {
+                required: 'Required',
+                pattern: { value: /^\S+@\S+\.\S+$/, message: 'Invalid email' },
+              })}
             />
-            {touched.email && errors.email && (
-              <p className="checkout-form__error" id="email-error">{errors.email}</p>
-            )}
+            {errors.email && <p className="checkout-form__error">{errors.email.message}</p>}
           </div>
 
           <div className="checkout-form__field">
-            <label htmlFor="address">Shipping address</label>
+            <label htmlFor="address">Address</label>
             <textarea
               id="address"
               rows="3"
-              value={values.address}
-              onChange={(event) => handleChange('address', event.target.value)}
-              onBlur={() => handleBlur('address')}
-              aria-invalid={Boolean(touched.address && errors.address)}
-              aria-describedby={errors.address ? 'address-error' : undefined}
+              {...register('address', {
+                required: 'Required',
+                minLength: { value: 10, message: 'Too short' },
+              })}
             />
-            {touched.address && errors.address && (
-              <p className="checkout-form__error" id="address-error">{errors.address}</p>
-            )}
+            {errors.address && <p className="checkout-form__error">{errors.address.message}</p>}
           </div>
 
           <div className="checkout-form__field">
@@ -124,31 +102,30 @@ export default function CheckoutPage() {
               id="cardNumber"
               type="text"
               inputMode="numeric"
-              placeholder="4242 4242 4242 4242"
-              value={values.cardNumber}
-              onChange={(event) => handleChange('cardNumber', event.target.value)}
-              onBlur={() => handleBlur('cardNumber')}
-              aria-invalid={Boolean(touched.cardNumber && errors.cardNumber)}
-              aria-describedby={errors.cardNumber ? 'card-error' : undefined}
+              placeholder="4242424242424242"
+              {...register('cardNumber', {
+                required: 'Required',
+                pattern: { value: /^\d{16}$/, message: 'Needs 16 digits' },
+              })}
             />
-            {touched.cardNumber && errors.cardNumber && (
-              <p className="checkout-form__error" id="card-error">{errors.cardNumber}</p>
+            {errors.cardNumber && (
+              <p className="checkout-form__error">{errors.cardNumber.message}</p>
             )}
-            <p className="checkout-form__hint">This is a demo — no real payment is processed.</p>
+            <p className="checkout-form__hint">Demo only — no payment goes through.</p>
           </div>
 
-          <button type="submit" className="checkout-form__submit" disabled={isProcessing}>
-            {isProcessing ? 'Processing…' : `Place order — $${subtotal.toFixed(2)}`}
+          <button type="submit" className="checkout-form__submit" disabled={isSubmitting}>
+            {isSubmitting ? 'One sec…' : `Pay $${subtotal.toFixed(2)}`}
           </button>
         </form>
 
         <aside className="checkout-summary">
-          <h2>Order summary</h2>
+          <h2>Summary</h2>
           <ul>
             {items.map((item) => (
               <li key={item.id}>
                 <span>
-                  {item.title} × {item.quantity}
+                  {item.title} x {item.quantity}
                 </span>
                 <span>${(item.price * item.quantity).toFixed(2)}</span>
               </li>

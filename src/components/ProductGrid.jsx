@@ -1,18 +1,22 @@
 import ProductCard from './ProductCard';
 import './ProductGrid.css';
 
-export default function ProductGrid({ products }) {
+export default function ProductGrid({ products, searchQuery, onClearFilters }) {
   if (products.length === 0) {
     return (
       <div className="product-grid__empty">
-        <p>No products match your filters.</p>
-        <p className="product-grid__empty-hint">Try a different search term or clear a filter.</p>
+        <p>{searchQuery ? `No results for "${searchQuery}"` : 'No products here'}</p>
+        {onClearFilters && (
+          <button type="button" className="product-grid__clear" onClick={onClearFilters}>
+            Clear filters
+          </button>
+        )}
       </div>
     );
   }
 
   return (
-    <ul className="product-grid" aria-label="Products">
+    <ul className="product-grid">
       {products.map((product) => (
         <li key={product.id}>
           <ProductCard product={product} />

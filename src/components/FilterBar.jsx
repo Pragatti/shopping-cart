@@ -1,3 +1,4 @@
+import { formatCategory } from '../utils/formatCategory';
 import { SORT_OPTIONS } from '../utils/sortOptions';
 import './FilterBar.css';
 
@@ -33,7 +34,7 @@ export default function FilterBar({
           <option value="all">All categories</option>
           {categories.map((cat) => (
             <option key={cat} value={cat}>
-              {cat}
+              {formatCategory(cat)}
             </option>
           ))}
         </select>

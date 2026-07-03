@@ -1,0 +1,9 @@
+.not-found {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.not-found a {
+  color: var(--color-sage-dark);
+  font-weight: 600;
+}

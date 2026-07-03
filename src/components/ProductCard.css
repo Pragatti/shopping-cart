@@ -1,5 +1,4 @@
 .product-card {
-  position: relative;
   display: flex;
   flex-direction: column;
   background: var(--color-paper-raised);
@@ -35,7 +34,7 @@
 }
 
 .product-card__body {
-  padding: 0.9rem 1rem 3.25rem;
+  padding: 0.9rem 1rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -62,28 +61,25 @@
   color: var(--color-ink);
 }
 
-/* Signature element: a hanging price tag clipped to the card's corner,
-   with a punched hole, evoking a physical market stall price ticket. */
-.product-card__tag {
-  position: absolute;
-  bottom: 0.9rem;
-  right: -0.35rem;
-  background: var(--color-gold);
-  color: var(--color-ink);
-  padding: 0.35rem 0.85rem 0.35rem 1.4rem;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1rem;
-  clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 50%);
+.product-card__price-row {
+  margin-top: auto;
+  padding-top: 0.75rem;
 }
 
-.product-card__tag-hole {
-  position: absolute;
-  left: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--color-paper);
+.product-card__price {
+  display: inline-block;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: background 0.15s ease;
+}
+
+.product-card:hover .product-card__price,
+.product-card:focus-visible .product-card__price {
+  background: var(--color-sage-dark);
 }

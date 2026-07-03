@@ -1,104 +1,99 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 20;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  border-bottom: 3px solid var(--color-gold);
+  z-index: 100;
+  background: #131921;
+  color: #fff;
 }
 
 .header__inner {
-  max-width: var(--max-width);
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0.85rem 1.25rem;
+  padding: 0.8rem 1.5rem;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 .header__logo {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--color-paper);
+  color: #fff;
   text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: 700;
   white-space: nowrap;
 }
 
-.header__logo-mark {
-  color: var(--color-gold);
+.header__logo span {
+  color: #ff9900;
 }
 
 .header__search {
   flex: 1;
   display: flex;
-  max-width: 480px;
-  margin: 0 auto;
 }
 
 .header__search input {
   flex: 1;
-  padding: 0.5rem 0.75rem;
+  padding: 0.7rem 1rem;
   border: none;
-  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  outline: none;
   font-size: 0.95rem;
-  min-width: 0;
+  border-radius: 6px 0 0 6px;
 }
 
 .header__search button {
-  padding: 0.5rem 0.9rem;
+  padding: 0 1.2rem;
   border: none;
-  background: var(--color-gold);
-  color: var(--color-ink);
-  font-weight: 700;
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: #ff9900;
+  color: #111;
+  font-weight: 600;
   cursor: pointer;
+  border-radius: 0 6px 6px 0;
 }
 
 .header__search button:hover {
-  background: var(--color-gold-dark);
+  background: #f3a847;
 }
 
 .header__cart {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  font-size: 1.3rem;
+  gap: 0.35rem;
+  color: #fff;
   text-decoration: none;
-  flex-shrink: 0;
+  font-weight: 600;
+  padding: 0.4rem 0.6rem;
+}
+
+.header__cart-icon {
+  display: none;
 }
 
 .header__cart-badge {
   position: absolute;
-  top: -2px;
-  right: -6px;
-  background: var(--color-gold);
-  color: var(--color-ink);
-  font-size: 0.7rem;
-  font-weight: 700;
+  top: -8px;
+  left: 14px;
   min-width: 18px;
   height: 18px;
-  border-radius: 999px;
+  padding: 0 5px;
+  border-radius: 50%;
+  background: #ff9900;
+  color: #111;
+  font-size: 0.7rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
 }
 
 @media (max-width: 640px) {
   .header__inner {
     flex-wrap: wrap;
   }
+
   .header__search {
     order: 3;
-    max-width: none;
     width: 100%;
-    margin: 0;
   }
 }

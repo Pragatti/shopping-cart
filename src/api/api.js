@@ -1,37 +1,33 @@
-const BASE_URL = 'https://fakestoreapi.com';
+const API = 'https://fakestoreapi.com';
 
-/**
- * Thin wrapper around fetch that normalizes error handling for the app.
- * Every function here throws a plain Error with a human-readable message
- * on failure, so calling hooks can catch one error shape.
- */
-async function request(path) {
-  let response;
+async function get(path) {
+  let res;
+
   try {
-    response = await fetch(`${BASE_URL}${path}`);
+    res = await fetch(`${API}${path}`);
   } catch {
-    throw new Error('Network error — check your connection and try again.');
+    throw new Error('Could not reach the server');
   }
 
-  if (!response.ok) {
-    throw new Error(`Request failed (${response.status}) for ${path}`);
+  if (!res.ok) {
+    throw new Error(`Request failed (${res.status})`);
   }
 
-  return response.json();
+  return res.json();
 }
 
 export function fetchProducts() {
-  return request('/products');
+  return get('/products');
 }
 
 export function fetchProductById(id) {
-  return request(`/products/${id}`);
+  return get(`/products/${id}`);
 }
 
 export function fetchCategories() {
-  return request('/products/categories');
+  return get('/products/categories');
 }
 
 export function fetchProductsByCategory(category) {
-  return request(`/products/category/${encodeURIComponent(category)}`);
+  return get(`/products/category/${encodeURIComponent(category)}`);
 }
